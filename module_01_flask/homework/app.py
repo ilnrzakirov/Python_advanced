@@ -17,8 +17,8 @@ def cars():
 
 @app.route('/cats')
 def cats():
-    cats = ["Корниш рекс", "Русская голубая", "Шотландская вислоухая", "Мэйн-кун", "Манчкин"]
-    return random.choice(cats)
+    cats_list = ["Корниш рекс", "Русская голубая", "Шотландская вислоухая", "Мэйн-кун", "Манчкин"]
+    return random.choice(cats_list)
 
 
 @app.route('/get_time/now')
@@ -33,20 +33,23 @@ def get_time_future():
 
 @app.route('/get_random_word')
 def get_random_word():
-    with open("war_and_peace.txt", "r", encoding="UTF-8") as war_and_peace:
-        global lines
-        for line in war_and_peace.readlines():
-            for item in line.split():
-                lines.append(item)
+    global lines
+    if len(lines) == 0:
+        with open("war_and_peace.txt", "r", encoding="UTF-8") as war_and_peace:
+            for line in war_and_peace.readlines():
+                for item in line.split():
+                    lines.append(item)
     return random.choice(lines)
-lines = []
 
+
+lines = []
 
 
 @app.route('/counter')
 def counter():
     global count
     count += 1
-    return  "Текущая страница открывалась: {} раз".format(count)
-count = 0
+    return "Текущая страница открывалась: {} раз".format(count)
 
+
+count = 0
