@@ -13,9 +13,31 @@ from flask import Flask
 app = Flask(__name__)
 
 
-@app.route("/hello-world/...")
-def hello_world() -> str:
-    """Put your code here"""
+@app.route("/hello-world/<username>")
+def hello_world(username) -> str:
+    today = datetime.datetime.today().weekday()
+    if today == 0:
+        day = "понедельника"
+        string = "Хорошего"
+    elif today == 1:
+        day = "вторника"
+        string = "Хорошего"
+    elif today == 2:
+        day = "среды"
+        string = "Хорошей"
+    elif today == 3:
+        day = "четверга"
+        string = "Хорошего"
+    elif today == 4:
+        day = "пятницы"
+        string = "Хорошей"
+    elif today == 5:
+        day = "суботы"
+        string = "Хорошей"
+    elif today == 6:
+        day = "воскресенья"
+        string = "Хорошего"
+    return f"Привет {username}. {string} {day} "
 
 
 if __name__ == "__main__":
