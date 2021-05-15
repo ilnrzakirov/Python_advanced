@@ -16,11 +16,11 @@ import os
 
 
 def _sizeof_fmt(num, suffix="B"):
-    # TODO В колонке RSS результат возвращается в килобайтах.
+    #  В колонке RSS результат возвращается в килобайтах.
     #  В текущей реализации результат будет в 1024 раза меньше
     #  чем должен быть. Для исправления проще всего убрать первый
     #  элемент списка в следующей строке.
-    for unit in ["", "Ki", "Mi", "Gi", "Ti", "Pi", "Ei", "Zi"]:
+    for unit in ["Ki", "Mi", "Gi", "Ti", "Pi", "Ei", "Zi"]:
         if abs(num) < 1024.0:
             return "%3.1f%s%s" % (num, unit, suffix)
         num /= 1024.0
@@ -42,8 +42,10 @@ def get_summary_rss(ps_output_file_path: str) -> str:
 
 
 if __name__ == "__main__":
-    # TODO Старайтесь использовать в заданиях относительные пути.
+    #  Старайтесь использовать в заданиях относительные пути.
     #  Если output_file.txt находится рядом с файлом задания,
     #  то достаточно пути "output_file.txt"
     print(
-        get_summary_rss("/home/ilnurzakirov/PycharmProjects/python_advanced/module_02_linux/homework/output_file.txt"))
+        get_summary_rss("output_file.txt"))
+
+
