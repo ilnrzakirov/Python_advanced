@@ -29,4 +29,26 @@
 
 
 def decrypt(s: str) -> str:
-    """Put your code here"""
+    item_list = []
+    count = 0
+    string_decrypt = ""
+    for sym in s:
+        count += 1
+        if sym == ".":
+            if len(item_list) == 0:
+                continue
+            else:
+                if item_list[count - 2] == ".":
+                    item_list = item_list[:-2]
+                    count -= 3
+                    continue
+        item_list.append(sym)
+    for sym in item_list:
+        if sym == ".":
+            continue
+        string_decrypt += sym
+    print(string_decrypt)
+    return string_decrypt
+
+
+decrypt("абр......a.")
