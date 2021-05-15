@@ -48,4 +48,5 @@ if __name__ == "__main__":
     print(
         get_summary_rss("output_file.txt"))
 
+# Зачёт!
 
