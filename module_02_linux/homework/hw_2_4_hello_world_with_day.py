@@ -16,6 +16,9 @@ app = Flask(__name__)
 @app.route("/hello-world/<username>")
 def hello_world(username) -> str:
     today = datetime.datetime.today().weekday()
+    # TODO Вместо серии повторяющихся проверок по одной переменной
+    #  оптимальнее будет сделать словарь, в котором номер дня недели
+    #  будет ключом, а текст сообщений сохранён в значениях.
     if today == 0:
         day = "понедельника"
         string = "Хорошего"

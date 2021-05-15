@@ -25,3 +25,5 @@ def max_number(numbers):
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+# Зачёт!
