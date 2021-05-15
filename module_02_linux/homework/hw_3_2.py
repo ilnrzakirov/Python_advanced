@@ -22,19 +22,34 @@ storage = {}
 @app.route("/add/<date>/<int:number>")
 def add(date: str, number: int):
     global storage
-    # put something here
+    if date in storage.keys():
+        storage[date] += number
+    else:
+        storage[date] = number
+    return f"Успешно"
 
 
 @app.route("/calculate/<int:year>")
 def calculate_year(year: int):
     global storage
-    # put something here
+    result = 0
+    for key, value in storage.items():
+        if str(key).startswith(str(year)):
+            result += value
+    print(storage)
+    return str(result)
+
 
 
 @app.route("/calculate/<int:year>/<int:month>")
 def calculate_month(year: int, month: int):
     global storage
-    # put something here
+    result = 0
+    date = str(year) + str(month)
+    for key, value in storage.items():
+        if str(key).startswith(date):
+            result += value
+    return str(result)
 
 
 if __name__ == "__main__":
