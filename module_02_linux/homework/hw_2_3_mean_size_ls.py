@@ -5,9 +5,10 @@
 import os
 
 
-def get_mean_size(ls_output_path: str) -> float:
-    """Put your code here"""
+def get_mean_size(ls_output_path: str) -> str:
+    size = os.path.getsize(ls_output_path)
+    return f"{round(size / 1024, 2)} Kib"
 
 
 if __name__ == "__main__":
-    print(get_mean_size("<place ls output file path here>"))
+    print(get_mean_size("output_file.txt"))
