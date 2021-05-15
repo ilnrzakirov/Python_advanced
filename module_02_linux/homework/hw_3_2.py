@@ -21,6 +21,11 @@ storage = {}
 
 @app.route("/add/<date>/<int:number>")
 def add(date: str, number: int):
+    # TODO При изменении содержимого объекта из глобальной области видимости
+    #  не нужно объявлять её глобальной. global нужно только в случае, когда вы
+    #  вы меняете саму переменную. Например для my_list.append() global не нужен.
+    #  А для my_list = [] без global не обойтись.
+    # TODO В этой функции не меняется переменная storage и global не нужен.
     global storage
     if date in storage.keys():
         storage[date] += number
@@ -31,6 +36,11 @@ def add(date: str, number: int):
 
 @app.route("/calculate/<int:year>")
 def calculate_year(year: int):
+    # TODO При изменении содержимого объекта из глобальной области видимости
+    #  не нужно объявлять её глобальной. global нужно только в случае, когда вы
+    #  вы меняете саму переменную. Например для my_list.append() global не нужен.
+    #  А для my_list = [] без global не обойтись.
+    # TODO В этой функции не меняется переменная storage и global не нужен.
     global storage
     result = 0
     for key, value in storage.items():
@@ -43,7 +53,16 @@ def calculate_year(year: int):
 
 @app.route("/calculate/<int:year>/<int:month>")
 def calculate_month(year: int, month: int):
+    # TODO При изменении содержимого объекта из глобальной области видимости
+    #  не нужно объявлять её глобальной. global нужно только в случае, когда вы
+    #  вы меняете саму переменную. Например для my_list.append() global не нужен.
+    #  А для my_list = [] без global не обойтись.
+    # TODO В этой функции не меняется переменная storage и global не нужен.
     global storage
+    # TODO Метод работает неверно в случаях когда месяц состоит из одной цифры.
+    #  Адрес вида /calculate/2020/05 даёт целочисленные аргументы функции
+    #  2020 и 5. В результате формируется ключ поиска 20205, а записи в словаре
+    #  имеют вид 202005XX
     result = 0
     date = str(year) + str(month)
     for key, value in storage.items():

@@ -43,6 +43,8 @@ def decrypt(s: str) -> str:
                     count -= 3
                     continue
         item_list.append(sym)
+    # TODO Можно убрать второй цикл, если записывать результат
+    #  в строку и заменить все одинарные точки: result.replace('.', '')
     for sym in item_list:
         if sym == ".":
             continue
@@ -52,3 +54,13 @@ def decrypt(s: str) -> str:
 
 
 decrypt("абр......a.")
+
+print(decrypt("абра-кадабра.") == "абра-кадабра")
+print(decrypt("абраа..-кадабра") == "абра-кадабра")
+print(decrypt("абраа..-.кадабра") == "абра-кадабра")
+print(decrypt("абра--..кадабра") == "абра-кадабра")
+print(decrypt("абрау...-кадабра") == "абра-кадабра") # (сначала срабатывает правило 2х точек, потом правило 1ой точки)
+print(decrypt("абра........") == "")
+print(decrypt("абр......a.") == "a")
+print(decrypt("1..2.3") =="23")
+print(decrypt(".") == "")

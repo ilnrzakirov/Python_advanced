@@ -11,4 +11,8 @@ def get_mean_size(ls_output_path: str) -> str:
 
 
 if __name__ == "__main__":
+    # TODO В этом задании нужно работать с файлом,
+    #  содержащим вывод команды ls -l.
+    #  В output_file.txt результаты вывода
+    #  команды ps.
     print(get_mean_size("output_file.txt"))
