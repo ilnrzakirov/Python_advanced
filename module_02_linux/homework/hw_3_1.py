@@ -30,7 +30,19 @@ app = Flask(__name__)
 
 @app.route("/head_file/<int:size>/<path:relative_path>")
 def head_file(size: int, relative_path: str):
-    """put your code here"""
+    print(relative_path)
+    result_size = 0
+    result_text = ""
+    abs_path = os.path.abspath(relative_path)
+    with open(abs_path) as file:
+        for line in file:
+            result_size += len(line)
+            result_text += line.replace(" ", "")
+        if len(result_text) > size:
+            result_text = result_text[:size]
+
+    return f"<b>{abs_path}</b> {result_size} <br> {result_text}"
+
 
 
 if __name__ == "__main__":
