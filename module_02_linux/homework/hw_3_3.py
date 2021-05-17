@@ -29,38 +29,31 @@
 
 
 def decrypt(s: str) -> str:
-    item_list = []
     count = 0
     string_decrypt = ""
     for sym in s:
         count += 1
         if sym == ".":
-            if len(item_list) == 0:
+            if len(string_decrypt) == 0:
                 continue
             else:
-                if item_list[count - 2] == ".":
-                    item_list = item_list[:-2]
+                if string_decrypt[count - 2] == ".":
+                    string_decrypt = string_decrypt[:-2]
                     count -= 3
                     continue
-        item_list.append(sym)
-    # TODO Можно убрать второй цикл, если записывать результат
-    #  в строку и заменить все одинарные точки: result.replace('.', '')
-    for sym in item_list:
-        if sym == ".":
-            continue
         string_decrypt += sym
-    print(string_decrypt)
-    return string_decrypt
+    result = string_decrypt.replace(".", "")
+    #  Можно убрать второй цикл, если записывать результат
+    #  в строку и заменить все одинарные точки: result.replace('.', '')
+    return result
 
-
-decrypt("абр......a.")
 
 print(decrypt("абра-кадабра.") == "абра-кадабра")
 print(decrypt("абраа..-кадабра") == "абра-кадабра")
 print(decrypt("абраа..-.кадабра") == "абра-кадабра")
 print(decrypt("абра--..кадабра") == "абра-кадабра")
-print(decrypt("абрау...-кадабра") == "абра-кадабра") # (сначала срабатывает правило 2х точек, потом правило 1ой точки)
+print(decrypt("абрау...-кадабра") == "абра-кадабра")  # (сначала срабатывает правило 2х точек, потом правило 1ой точки)
 print(decrypt("абра........") == "")
 print(decrypt("абр......a.") == "a")
-print(decrypt("1..2.3") =="23")
+print(decrypt("1..2.3") == "23")
 print(decrypt(".") == "")

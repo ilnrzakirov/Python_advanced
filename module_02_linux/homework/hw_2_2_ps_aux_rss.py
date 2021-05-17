@@ -12,7 +12,6 @@ $ ps aux >> output_file.txt
 
 Для перевода можете воспользоваться функцией _sizeof_fmt
 """
-import os
 
 
 def _sizeof_fmt(num, suffix="B"):
