@@ -12,6 +12,7 @@ def get_mean_size(ls_output_path: str) -> str:
             if len(lines) > 2:
                 result += int(lines[4])
 
+    # TODO Нужно выводить не суммарное значение, а среднее.
     return str(result)
 
 

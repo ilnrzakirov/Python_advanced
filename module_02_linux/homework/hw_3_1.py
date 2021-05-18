@@ -44,6 +44,7 @@ def head_file(size: int, relative_path: str):
     return f"<b>{abs_path}</b> {result_size} <br> {result_text}"
 
 
-
 if __name__ == "__main__":
     app.run(debug=True)
+
+# Зачёт!

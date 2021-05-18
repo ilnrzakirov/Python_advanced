@@ -57,3 +57,5 @@ print(decrypt("абра........") == "")
 print(decrypt("абр......a.") == "a")
 print(decrypt("1..2.3") == "23")
 print(decrypt(".") == "")
+
+# Зачёт!
