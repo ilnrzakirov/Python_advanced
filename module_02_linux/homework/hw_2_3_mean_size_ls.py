@@ -6,13 +6,16 @@
 
 def get_mean_size(ls_output_path: str) -> str:
     result = 0
+    count = 0
     with open(ls_output_path, "r") as file:
         for line in file:
             lines = line.split()
             if len(lines) > 2:
+                count += 1
                 result += int(lines[4])
+        result /= count
 
-    # TODO Нужно выводить не суммарное значение, а среднее.
+    #  Нужно выводить не суммарное значение, а среднее.
     return str(result)
 
 
