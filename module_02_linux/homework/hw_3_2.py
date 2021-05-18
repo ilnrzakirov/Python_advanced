@@ -70,3 +70,5 @@ def calculate_month(year: int, month: int):
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+# Зачёт!
