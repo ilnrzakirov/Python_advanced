@@ -12,6 +12,8 @@
 YYYYMMDD , где YYYY -- год, MM -- месяц (число от 1 до 12), DD -- число (от 01 до 31)
 Гарантируется, что переданная дата -- корректная (никаких 31 февраля)
 """
+import datetime
+
 from flask import Flask
 
 app = Flask(__name__)
@@ -26,11 +28,14 @@ def add(date: str, number: int):
     #  вы меняете саму переменную. Например для my_list.append() global не нужен.
     #  А для my_list = [] без global не обойтись.
     #  В этой функции не меняется переменная storage и global не нужен
-    if date in storage.keys():
-        storage[date] += number
+    if datetime.datetime.strptime(date, "%Y%m%d"):
+        if date in storage.keys():
+            storage[date] += number
+        else:
+            storage[date] = number
+        return f"Успешно"
     else:
-        storage[date] = number
-    return f"Успешно"
+        raise ValueError
 
 
 @app.route("/calculate/<int:year>")
@@ -44,7 +49,6 @@ def calculate_year(year: int):
     for key, value in storage.items():
         if str(key).startswith(str(year)):
             result += value
-    print(storage)
     return str(result)
 
 
