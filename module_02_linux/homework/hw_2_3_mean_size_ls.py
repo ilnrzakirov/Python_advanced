@@ -25,3 +25,5 @@ if __name__ == "__main__":
     #  В output_file.txt результаты вывода
     #  команды ps.
     print(get_mean_size("output.txt"))
+
+# Зачёт!
