@@ -11,12 +11,15 @@ class TestWasteOfMoney(unittest.TestCase):
         app.config["DEBUG"] = False
         self.app = app.test_client()
         self.base_url = "/add/"
+        #  Перед заполнением словаря его лучше очищать.
+        storage.clear()
         storage.update({"20210510": 1000, "20210310": 1500, "20201205": 100})
 
     def test_chek_add(self):
         add_date = "20000819"
         add_waste = "5000"
-        response = self.app.get(self.base_url + add_date + os.sep + add_waste)
+        #  Переменная response не используется.
+        self.app.get(self.base_url + add_date + os.sep + add_waste)
         self.assertTrue(storage[add_date], int(add_waste))
 
     def test_correct_calculate_year(self):
@@ -43,6 +46,3 @@ class TestWasteOfMoney(unittest.TestCase):
         response = self.app.get(calculate_year)
         response_text = response.data.decode()
         self.assertEqual(response_text, "0")
-
-
-

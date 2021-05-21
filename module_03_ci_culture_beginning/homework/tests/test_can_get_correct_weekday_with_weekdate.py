@@ -4,6 +4,7 @@ import datetime
 
 from module_02_linux.homework.hw_2_4_hello_world_with_day import app
 
+
 class TestWeekDay(unittest.TestCase):
     def setUp(self) -> None:
         app.config["TESTING"] = True
