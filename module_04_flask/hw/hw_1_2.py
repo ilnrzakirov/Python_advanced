@@ -19,6 +19,8 @@ app = Flask(__name__)
 class RegistrationForm(FlaskForm):
     email = StringField(validators=[InputRequired(), Email()])
     phone = IntegerField(validators=[InputRequired(), NumberRange(min=1000000000, max=9999999999)])
+    # TODO Нужно инициализировать экземпляры класса InputRequired. Сейчас в поля формы передаются
+    #  ссылки на класс, что вызывает ошибку.
     name = StringField(validators=[InputRequired])
     address = StringField(validators=[InputRequired])
     index = IntegerField(validators=[InputRequired])
