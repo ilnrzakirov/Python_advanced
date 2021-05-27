@@ -12,3 +12,24 @@
     >>> command = shlex.split(command_str)
     >>> result = subprocess.run(command, capture_output=True)
 """
+
+from flask import Flask, request
+
+import shlex
+
+import subprocess
+
+
+app = Flask(__name__)
+
+
+@app.route("/uptime")
+def uptime():
+    command_str = f"uptime"
+    command = shlex.split(command_str)
+    result = subprocess.run(command, capture_output=True)
+    return f"Current uptime is {result}"
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
