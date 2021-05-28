@@ -57,3 +57,4 @@ class TestForm(unittest.TestCase):
         response = self.app.post(self.base_url, json=argum)
         self.assertTrue(response, 400)
 
+# Зачёт!
