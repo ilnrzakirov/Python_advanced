@@ -30,6 +30,12 @@ def _ps():
     command_str = f"ps {flag[0]}"
     command = shlex.split(command_str)
     result = subprocess.run(command, capture_output=True)
+    # TODO Здесь аргументы к ps передаёт пользователь и
+    #  это может вызвать ошибки. Поэтому нужно проверять
+    #  result.returncode и если программа завершилась
+    #  без ошибок нужно вернуть result.stdout.
+    #  В случае ошибки нужно вывести сообщение и вернуть
+    #  подробности из result.stderr.
     response = result.stdout.decode()
     return f"<pre>{response}</pre>"
 
