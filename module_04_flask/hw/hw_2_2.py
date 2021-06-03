@@ -12,7 +12,7 @@
     >>> command = shlex.split(command_str)
     >>> result = subprocess.run(command, capture_output=True)
 """
-from celery.bin.result import result
+#from celery.bin.result import result
 from flask import Flask, request
 
 import shlex
@@ -28,10 +28,11 @@ def uptime():
     command_str = f"uptime"
     command = shlex.split(command_str)
     result = subprocess.run(command, capture_output=True)
+    response = result.stdout.split()
     # TODO В return эндполинта возвращает объект типа CompletedProcess.
     #  Нужно получить строку из result.stdout, вырезать из неё фрагмент
     #  с аптаймом и вернуть пользователю полученный результат.
-    return f"Current uptime is {result}"
+    return f"Current uptime is {response[2]}"
 
 
 if __name__ == "__main__":
