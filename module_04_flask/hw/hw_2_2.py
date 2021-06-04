@@ -33,7 +33,7 @@ def uptime():
     response = result.stdout.decode().split(",")
     #  В return эндполинта возвращает объект типа CompletedProcess.
     #  Нужно получить строку из result.stdout, вырезать из неё фрагмент
-    #  с аптаймом и вернуть пользователю полученный результат.
+    #  с аптаймом и вернуть пользователю полученный результат
     return f"Current uptime is {response[0]}"
 
 
