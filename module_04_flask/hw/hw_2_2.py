@@ -7,10 +7,10 @@
         )
 
 Напомним, что вызвать программу из python можно с помощью модуля subprocess:
-    >>> import shlex, subprocess
-    >>> command_str = f"uptime"
-    >>> command = shlex.split(command_str)
-    >>> result = subprocess.run(command, capture_output=True)
+    # >>> import shlex, subprocess
+    # >>> command_str = f"uptime"
+    # >>> command = shlex.split(command_str)
+    # >>> result = subprocess.run(command, capture_output=True)
 """
 #from celery.bin.result import result
 from flask import Flask, request
@@ -28,11 +28,13 @@ def uptime():
     command_str = f"uptime"
     command = shlex.split(command_str)
     result = subprocess.run(command, capture_output=True)
-    response = result.stdout.split()
-    # TODO В return эндполинта возвращает объект типа CompletedProcess.
+    #  Лучше разделить строку результата по запятой и
+    #  взять первую часть.
+    response = result.stdout.decode().split(",")
+    #  В return эндполинта возвращает объект типа CompletedProcess.
     #  Нужно получить строку из result.stdout, вырезать из неё фрагмент
     #  с аптаймом и вернуть пользователю полученный результат.
-    return f"Current uptime is {response[2]}"
+    return f"Current uptime is {response[0]}"
 
 
 if __name__ == "__main__":
