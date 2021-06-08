@@ -26,14 +26,15 @@ app = Flask(__name__)
 
 @app.route("/ps", methods=["GET"])
 def _ps():
-    flag = request.args.getlist("flag")
-    command_str = f"ps {flag[0]}"
+    req = request.args.getlist("flag")
+    flag = "".join(req)
+    command_str = f"ps {flag}"
     command = shlex.split(command_str)
     result = subprocess.run(command, capture_output=True)
     if result.returncode == 0:
         return f"<pre>{result.stdout.decode()}</pre>"
     else:
-        print(f"Ошибка ввода: {result.stderr.decode()}")
+        return f"Ошибка ввода: {result.stderr.decode()}"
     # TODO Здесь аргументы к ps передаёт пользователь и
     #  это может вызвать ошибки. Поэтому нужно проверять
     #  result.returncode и если программа завершилась
