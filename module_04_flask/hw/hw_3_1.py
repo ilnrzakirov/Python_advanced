@@ -35,7 +35,7 @@ def _ps():
         return f"<pre>{result.stdout.decode()}</pre>"
     else:
         return f"Ошибка ввода: {result.stderr.decode()}"
-    # TODO Здесь аргументы к ps передаёт пользователь и
+    #  Здесь аргументы к ps передаёт пользователь и
     #  это может вызвать ошибки. Поэтому нужно проверять
     #  result.returncode и если программа завершилась
     #  без ошибок нужно вернуть result.stdout.
@@ -43,8 +43,7 @@ def _ps():
     #  подробности из result.stderr.
 
 
-
-
-
 if __name__ == "__main__":
     app.run(debug=True)
+
+# Зачёт!
