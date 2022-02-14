@@ -12,9 +12,9 @@ class SavedFile:
         return self.file
 
     def __exit__(self, type, value, traceback):
-
-        print("Exception {} has been handled".format(type))
-        self.file.close()
+        if type not in self.exp:
+            print("Exception {} has been handled".format(type))
+            self.file.close()
         return True
 
 
