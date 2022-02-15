@@ -15,8 +15,39 @@
 
 Покройте функцию логгированием.
 """
+import logging
 from typing import List
+
+logger = logging.getLogger("salary")
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%H:%M:%S')
 
 
 def get_average_salary_corrected(salaries: List[int]) -> float:
-    pass
+    res = 0
+    if not isinstance(salaries, list):
+        logger.debug("Ошибка вх данных")
+        return 0
+    max = salaries[0]
+    min = salaries[0]
+    if len(salaries) > 0:
+        for salary in salaries:
+            if not isinstance(salary, int):
+                logger.debug("Подается не число")
+                continue
+            if salary <= 0:
+                logger.debug("Число меньше либо равно нулю")
+                continue
+            if salary > max:
+                max = salary
+            elif salary < min:
+                min = salary
+            res += salary
+    if res == 0:
+        logger.debug("Дайте список реальных зарплат")
+        return 0
+    else:
+        logger.debug("Список зарплат пуст")
+    return ((res - min - max) / (len(salaries) - 2))
+
+
+print(get_average_salary_corrected({0, 0, 0, 0, 0}))

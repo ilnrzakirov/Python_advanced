@@ -31,4 +31,31 @@ from typing import List
 
 
 def my_t9(input_numbers: str) -> List[str]:
-    pass
+    dict = {2: ['a', 'b', 'c'], 3: ['d', 'e', 'f'], 4: ['g', 'h', 'i'], 5: ['j', 'k', 'l'], 6: ['m', 'n', 'o'],
+            7: ['p', 'q', 'r', 's'], 8: ['t', 'u', 'v'], 9: ['w', 'x', 'y', 'z']}
+
+    res = ""
+    for num in input_numbers:
+        list = iter(dict[int(num)])
+        flag = False
+        res += next(list)
+        print(res)
+        with open("/usr/share/dict/words", "r") as file:
+            for word in file.readlines():
+                # try:
+                    if res == word.strip('\n'):
+                        flag = True
+                        print(f"{res} res")
+                        break
+                    elif res in word.strip('\n'):
+                        if len(word) == len(input_numbers):
+                            flag = True
+                            break
+            if not flag:
+                res = res[:-1]
+                res += next(list)
+                # except StopIteration:
+                #     pass
+    print(res)
+
+my_t9("22736368")

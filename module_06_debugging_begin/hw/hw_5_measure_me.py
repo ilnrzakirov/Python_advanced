@@ -13,6 +13,7 @@
 Запустите эту программу, соберите логи и посчитайте
 среднее время выполнения функции measure_me.
 """
+import datetime
 import logging
 import random
 from typing import List
@@ -66,8 +67,29 @@ def measure_me(nums: List[int]) -> List[List[int]]:
     return results
 
 
+
+def median_time():
+    res = 0
+    count = 0
+    ret = 0
+    with open("median", "r") as file:
+        for line in file.readlines():
+            if "Enter" in line:
+                time = line.split()
+                enter_time = datetime.datetime.strptime(time[0], "%H:%M:%S")
+            elif "Leave" in line:
+                time = line.split()
+                end_time = datetime.datetime.strptime(time[0], "%H:%M:%S")
+                count += 1
+                res = end_time - enter_time
+
+    if count != 0:
+        ret = res / count
+    print(ret)
+
 if __name__ == "__main__":
-    logging.basicConfig(level="DEBUG")
+    logging.basicConfig(level="DEBUG", filename="median", format='%(asctime)s %(message)s', datefmt='%H:%M:%S')
     for it in range(15):
-        data_line = get_data_line(10 ** 3)
+        data_line = get_data_line(200)
         measure_me(data_line)
+    median_time()

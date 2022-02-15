@@ -22,7 +22,19 @@ logger = logging.getLogger("password_checker")
 
 
 def check_if_password_is_weak(password_string: str) -> bool:
-    pass
+    flag = 0
+    with open("/usr/share/dict/words", "r") as f:
+        if not isinstance(password_string, str):
+            return False
+        elif len(password_string) <= 4:
+            return False
+        for line in f.readlines():
+            if len(line) > 4:
+                if password_string.find(line.lower().strip('\n')) != -1:
+                    flag = 1
+    if flag == 1:
+        return False
+    return True
 
 
 def input_and_check_password():
@@ -32,7 +44,7 @@ def input_and_check_password():
     if not password:
         logger.warning("Вы ввели пустой пароль.")
         return False
-    elif check_if_password_is_weak(password):
+    elif not check_if_password_is_weak(password):
         logger.warning("Вы ввели слишком слабый пароль")
         return False
 
