@@ -35,6 +35,7 @@ def my_t9(input_numbers: str) -> List[str]:
             7: ('p', 'q', 'r', 's'), 8: ('t', 'u', 'v'), 9: ('w', 'x', 'y', 'z')}
 
     res = []
+    rem = []
     tmp = []
     s = ""
     for item in input_numbers:
@@ -43,13 +44,13 @@ def my_t9(input_numbers: str) -> List[str]:
     for item in combinations:
         for char in item:
             s += char
-        with open("/usr/share/dict/words", "r") as file:
-            for word in file.readlines():
-                if s == word.strip('\n'):
-                    res.append(s)
-                    break
+        rem.append(s)
         s = ""
+    with open("/usr/share/dict/words", "r") as file:
+        for word in file.readlines():
+            if word.strip('\n') in rem:
+                res.append(word.strip('\n'))
     return res
 
 
-my_t9("22736")
+my_t9("227")
