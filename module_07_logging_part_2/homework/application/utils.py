@@ -19,12 +19,12 @@ def string_to_operator(value: str) -> Callable[[Numeric, Numeric], Numeric]:
     :param value: basic arithmetic function
     """
     if not isinstance(value, str):
-        utils_logger.error(f"wrong operator type, value={value}")
+        utils_logger.warning(f"wrong operator type, value={value}")
         print("wrong operator type", value)
         raise ValueError("wrong operator type")
 
     if value not in OPERATORS:
-        utils_logger.error(f"wrong operator value, value={value}")
+        utils_logger.warning(f"wrong operator value, value={value}")
         print("wrong operator value", value)
         raise ValueError("wrong operator value")
 

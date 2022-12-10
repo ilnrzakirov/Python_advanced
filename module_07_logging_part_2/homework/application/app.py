@@ -6,6 +6,8 @@ from utils import string_to_operator
 logger = logging.getLogger("calc_logger")
 logging.basicConfig()
 logger.setLevel('INFO')
+handler = logging.StreamHandler(sys.stdout)
+logger.addHandler(handler)
 
 
 def calc(args):
