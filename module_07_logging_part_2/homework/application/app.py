@@ -10,6 +10,17 @@ handler = logging.StreamHandler(sys.stdout)
 datefmt = '%Y-%m-%d %H:%M:%S'
 formatter = logging.Formatter(fmt="%(levelname)s | %(name)s | %(asctime)s | %(lineno)d | %(message)s", datefmt=datefmt)
 handler.setFormatter(formatter)
+e_handler = logging.FileHandler("error.log")
+e_handler.setLevel(logging.ERROR)
+w_handler = logging.FileHandler("warning.log", "w")
+w_handler.setLevel(logging.WARNING)
+w_handler.setFormatter(formatter)
+i_handler = logging.FileHandler("info.log")
+i_handler.setFormatter(formatter)
+i_handler.setLevel(logging.INFO)
+logger.addHandler(w_handler)
+logger.addHandler(e_handler)
+logger.addHandler(i_handler)
 logger.addHandler(handler)
 
 def calc(args):
