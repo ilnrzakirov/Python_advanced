@@ -1,8 +1,15 @@
 import logging
+import sys
 from typing import Union, Callable
 from operator import sub, mul, add
 
 utils_logger = logging.getLogger("utils_logger")
+utils_logger.setLevel('INFO')
+handler = logging.StreamHandler(sys.stdout)
+datefmt = '%Y-%m-%d %H:%M:%S'
+formatter = logging.Formatter(fmt="%(levelname)s | %(name)s | %(asctime)s | %(lineno)d | %(message)s", datefmt=datefmt)
+handler.setFormatter(formatter)
+utils_logger.addHandler(handler)
 
 OPERATORS = {
     '+': add,
@@ -20,12 +27,10 @@ def string_to_operator(value: str) -> Callable[[Numeric, Numeric], Numeric]:
     """
     if not isinstance(value, str):
         utils_logger.warning(f"wrong operator type, value={value}")
-        print("wrong operator type", value)
         raise ValueError("wrong operator type")
 
     if value not in OPERATORS:
         utils_logger.warning(f"wrong operator value, value={value}")
-        print("wrong operator value", value)
         raise ValueError("wrong operator value")
 
     return OPERATORS[value]
