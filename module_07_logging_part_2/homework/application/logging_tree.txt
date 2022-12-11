@@ -1,0 +1,41 @@
+<--""
+   Level WARNING
+   |
+   o<--"calc_logger"
+   |   Level INFO
+   |   Handler Stream <_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>
+   |     Level INFO
+   |     Formatter fmt='%(levelname)s | %(name)s | %(asctime)s | %(lineno)d | %(message)s' datefmt=None
+   |   Handler File '/Users/Ilnur/PycharmProjects/Python_advanced_hub/module_07_logging_part_2/homework/application/debug.log'
+   |     Level DEBUG
+   |     Formatter fmt='%(levelname)s | %(name)s | %(asctime)s | %(lineno)d | %(message)s' datefmt=None
+   |   Handler File '/Users/Ilnur/PycharmProjects/Python_advanced_hub/module_07_logging_part_2/homework/application/error.log'
+   |     Level ERROR
+   |     Formatter fmt='%(levelname)s | %(name)s | %(asctime)s | %(lineno)d | %(message)s' datefmt=None
+   |   Handler File '/Users/Ilnur/PycharmProjects/Python_advanced_hub/module_07_logging_part_2/homework/application/info.log'
+   |     Level INFO
+   |     Formatter fmt='%(levelname)s | %(name)s | %(asctime)s | %(lineno)d | %(message)s' datefmt=None
+   |   Handler File '/Users/Ilnur/PycharmProjects/Python_advanced_hub/module_07_logging_part_2/homework/application/warning.log'
+   |     Level WARNING
+   |     Formatter fmt='%(levelname)s | %(name)s | %(asctime)s | %(lineno)d | %(message)s' datefmt=None
+   |
+   o<--"utils_logger"
+       Level INFO
+       Handler Stream <_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>
+         Level INFO
+         Formatter fmt='%(levelname)s | %(name)s | %(asctime)s | %(lineno)d | %(message)s' datefmt=None
+       Handler File '/Users/Ilnur/PycharmProjects/Python_advanced_hub/module_07_logging_part_2/homework/application/debug.log'
+         Level DEBUG
+         Formatter fmt='%(levelname)s | %(name)s | %(asctime)s | %(lineno)d | %(message)s' datefmt=None
+       Handler File '/Users/Ilnur/PycharmProjects/Python_advanced_hub/module_07_logging_part_2/homework/application/error.log'
+         Level ERROR
+         Formatter fmt='%(levelname)s | %(name)s | %(asctime)s | %(lineno)d | %(message)s' datefmt=None
+       Handler File '/Users/Ilnur/PycharmProjects/Python_advanced_hub/module_07_logging_part_2/homework/application/info.log'
+         Level INFO
+         Formatter fmt='%(levelname)s | %(name)s | %(asctime)s | %(lineno)d | %(message)s' datefmt=None
+       Handler File '/Users/Ilnur/PycharmProjects/Python_advanced_hub/module_07_logging_part_2/homework/application/warning.log'
+         Level WARNING
+         Formatter fmt='%(levelname)s | %(name)s | %(asctime)s | %(lineno)d | %(message)s' datefmt=None
+       Handler TimedRotatingFile '/Users/Ilnur/PycharmProjects/Python_advanced_hub/module_07_logging_part_2/homework/application/utils.log' when='S' interval=10 backupCount='2'
+         Level INFO
+         Formatter fmt='%(levelname)s | %(name)s | %(asctime)s | %(lineno)d | %(message)s' datefmt=None

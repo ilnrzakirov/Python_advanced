@@ -1,12 +1,16 @@
 import sys
 import logging.config
-from log_conf import dict_conf
 
+import logging_tree
+
+from log_conf import dict_conf
 
 from utils import string_to_operator
 
 logging.config.dictConfig(dict_conf)
 logger = logging.getLogger("calc_logger")
+with open("logging_tree.txt", "w") as file:
+    file.write(logging_tree.format.build_description())
 # logger.setLevel('INFO')
 # handler = logging.StreamHandler(sys.stdout)
 # datefmt = '%Y-%m-%d %H:%M:%S'
