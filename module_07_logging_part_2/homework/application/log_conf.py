@@ -1,5 +1,4 @@
 
-
 dict_conf = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -43,6 +42,15 @@ dict_conf = {
             "filename": "debug.log",
             "mode": "a",
         },
+        "time_handler": {
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "level": "INFO",
+            "formatter": "base",
+            "filename": "utils.log",
+            "when": "S",
+            "interval": 10,
+            "backupCount": "2",
+        },
     },
     "loggers": {
         "calc_logger": {
@@ -51,7 +59,7 @@ dict_conf = {
         },
         "utils_logger": {
             "level": "INFO",
-            "handlers": ["console", "file_d", "file_e", "file_i", "file_w"],
+            "handlers": ["console", "file_d", "file_e", "file_i", "file_w", "time_handler"],
         }
     }
 }
