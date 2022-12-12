@@ -3,8 +3,8 @@
    |
    o<--"calc_logger"
    |   Level INFO
-   |   Filter <log_conf.ASCIIFilter object at 0x102f6da60>
-   |   Filter <log_conf.ASCIIFilter object at 0x102f7beb0>
+   |   Filter <log_conf.ASCIIFilter object at 0x103082170>
+   |   Filter <log_conf.ASCIIFilter object at 0x1030bac50>
    |   Handler Stream <_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>
    |     Level INFO
    |     Formatter fmt='%(levelname)s | %(name)s | %(asctime)s | %(lineno)d | %(message)s' datefmt=None
@@ -20,6 +20,8 @@
    |   Handler File '/Users/Ilnur/PycharmProjects/Python_advanced_hub/module_07_logging_part_2/homework/application/warning.log'
    |     Level WARNING
    |     Formatter fmt='%(levelname)s | %(name)s | %(asctime)s | %(lineno)d | %(message)s' datefmt=None
+   |   Handler <ToFlask (INFO)>
+   |     Level INFO
    |
    o<--"utils_logger"
        Level INFO
