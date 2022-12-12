@@ -1,3 +1,9 @@
+import logging
+
+
+class ASCIIFilter(logging.Filter):
+    def filter(self, record: logging.LogRecord) -> bool:
+        return record.getMessage().isascii()
 
 dict_conf = {
     "version": 1,
@@ -52,14 +58,20 @@ dict_conf = {
             "backupCount": "2",
         },
     },
+    "filters": {
+        "ascii": {
+            "()": ASCIIFilter
+        }
+    },
     "loggers": {
         "calc_logger": {
             "level": "INFO",
             "handlers": ["console", "file_d", "file_e", "file_i", "file_w"],
+            "filters": ["ascii", ],
         },
         "utils_logger": {
             "level": "INFO",
             "handlers": ["console", "file_d", "file_e", "file_i", "file_w", "time_handler"],
         }
-    }
+    },
 }
