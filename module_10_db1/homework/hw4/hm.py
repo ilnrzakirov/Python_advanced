@@ -53,4 +53,3 @@ def find_insert_position(x: int, a: list[int]) -> int:
     return pos
 
 print(find_insert_position(5, [0, 1, 3, 5, 7, 9]))
-
