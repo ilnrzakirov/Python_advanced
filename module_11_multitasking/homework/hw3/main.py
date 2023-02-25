@@ -10,6 +10,7 @@ logging.basicConfig(level=logging.INFO)
 logger: logging.Logger = logging.getLogger(__name__)
 
 
+
 class Seller(threading.Thread):
 
     def __init__(self, semaphore: threading.Semaphore) -> None:
