@@ -1,12 +1,14 @@
 import datetime
 import json
 import sqlite3
+from multiprocessing import (
+    Pool,
+    cpu_count,
+)
 from multiprocessing.pool import ThreadPool
 
-import requests
-from multiprocessing import Pool, cpu_count
-
 import pydantic
+import requests
 
 
 class People(pydantic.BaseModel):
@@ -19,9 +21,11 @@ class People(pydantic.BaseModel):
 def create_objects(parameters: list[tuple]) -> None:
     with sqlite3.connect("hw") as conn:
         cursor = conn.cursor()
-        cursor.executemany(f"""
+        cursor.executemany(
+            """
             INSERT INTO people VALUES (?,?,?,?)
-        """, parameters)
+        """, parameters,
+        )
         conn.commit()
 
 
@@ -39,7 +43,7 @@ def worker(url: str) -> People:
         data = json.loads(response.text)
         people = People.parse_obj(data)
         return people
-    except requests.exceptions.RequestException as e:
+    except requests.exceptions.RequestException:
         pass
 
 
