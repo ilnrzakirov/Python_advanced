@@ -1,6 +1,8 @@
 import datetime
 import json
 import sqlite3
+from multiprocessing.pool import ThreadPool
+
 import requests
 from multiprocessing import Pool, cpu_count
 
@@ -54,14 +56,20 @@ def download_form_pool() -> datetime.timedelta:
 def download_form_thread_pool() -> datetime.timedelta:
     start_time = datetime.datetime.now()
     urls = get_url_list()
+    pool = ThreadPool(processes=10)
+    people_list = pool.map(worker, urls)
+    pool.close()
+    pool.join()
+    parameters = [(people.name, people.height, people.mass, people.gender) for people in people_list]
+    create_objects(parameters)
     return datetime.datetime.now() - start_time
 
 
 def main():
     download_form_pool_time = download_form_pool()
     print(f"Pool: {download_form_pool_time}")
-    # download_form_thread_pool_time = download_form_thread_pool()
-    # print(f"ThreadPool: {download_form_thread_pool_time}")
+    download_form_thread_pool_time = download_form_thread_pool()
+    print(f"ThreadPool: {download_form_thread_pool_time}")
 
 
 if __name__ == "__main__":
