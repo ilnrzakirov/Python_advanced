@@ -8,14 +8,14 @@ import requests
 URL = "http://127.0.0.1:8080/timestamp/"
 
 
-def write_log(q: queue.Queue):
+def write_log(q: queue.Queue) -> None:
     if job := q.get():
         timestamp_datetime = datetime.datetime.strptime(job[1], "%Y-%m-%d %H:%M:%S.%f")
         with open("log.log", "a") as file:
             file.write(f"{datetime.datetime.isoformat(timestamp_datetime)}\n")
 
 
-def worker(q: queue.PriorityQueue):
+def worker(q: queue.PriorityQueue) -> None:
     start_time = datetime.datetime.now()
     while datetime.datetime.now() < start_time + datetime.timedelta(seconds=20):
         try:
@@ -29,7 +29,7 @@ def worker(q: queue.PriorityQueue):
             print(f"error: {e}")
 
 
-def main():
+def main() -> None:
     try:
         q = queue.PriorityQueue(10)
         tasks: list[threading.Thread] = []
