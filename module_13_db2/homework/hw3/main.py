@@ -6,15 +6,26 @@ def log_bird(
         cursor: sqlite3.Cursor,
         bird_name: str,
         date_time: str,
+        count: int,
 ) -> None:
-    ...
+    query = f"""
+        INSERT INTO table_bird (name, count, time)
+        VALUES ('{bird_name}', {count} ,'{date_time}')
+    """
+    cursor.execute(query)
 
 
 def check_if_such_bird_already_seen(
         cursor: sqlite3.Cursor,
         bird_name: str,
 ) -> bool:
-    ...
+    query = f"""
+        SELECT COUNT(*) > 1 FROM table_bird
+        WHERE  name = '{bird_name}'
+    """
+    cursor.execute(query)
+    return cursor.fetchone()[0]
+
 
 
 if __name__ == "__main__":
@@ -26,7 +37,15 @@ if __name__ == "__main__":
 
     with sqlite3.connect("../homework.db") as connection:
         cursor: sqlite3.Cursor = connection.cursor()
-        log_bird(cursor, name, right_now)
+        cursor.execute(
+            """CREATE TABLE  IF NOT EXISTS table_bird (
+            name VARCHAR(500) NOT NULL,
+            count INTEGER not null,
+            time DATETIME not null
+        );
+        """,
+        )
+        log_bird(cursor, name, right_now, count)
 
         if check_if_such_bird_already_seen(cursor, name):
             print("Такую птицу мы уже наблюдали!")
