@@ -1,14 +1,17 @@
 import sqlite3
+
 import pydantic
 
 
 class Employer(pydantic.BaseModel):
+    id: int
     name: str
     salary: int
 
+
 IVAN_SALARY_QUERY = """
         SELECT em.salary FROM table_effective_manager em
-        WHERE em.name = "Иван Совин"
+        WHERE em.name = 'Иван Совин'
     """
 
 with sqlite3.connect('../homework.db') as conn:
@@ -24,6 +27,21 @@ def get_employer(name: str) -> str:
     return query
 
 
+def delete_employer(employer: Employer, cursor: sqlite3.Cursor) -> None:
+    query = f"""
+        DELETE FROM table_effective_manager WHERE id={employer.id}
+    """
+    cursor.execute(query)
+
+
+def update_salary(employer: Employer, cursor: sqlite3.Cursor) -> None:
+    query = f"""
+        UPDATE table_effective_manager SET salary = {employer.salary * 1.1}
+            WHERE id={employer.id}
+    """
+    cursor.execute(query)
+
+
 def ivan_sovin_the_most_effective(
         cursor: sqlite3.Cursor,
         name: str,
@@ -31,15 +49,16 @@ def ivan_sovin_the_most_effective(
     res = cursor.execute(get_employer(name))
     if data := res.fetchone():
         employer = Employer(
+            id=data[0],
             name=data[1],
-            salary=data[2]
+            salary=data[2],
         )
         if employer.name == "Иван Совин":
             return
         if employer.salary >= IVAN_SALARY:
-            ...
+            delete_employer(employer, cursor)
         else:
-            ...
+            update_salary(employer, cursor)
 
 
 if __name__ == '__main__':
