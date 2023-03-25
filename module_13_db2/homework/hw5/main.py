@@ -1,4 +1,7 @@
 import sqlite3
+import pycountry
+
+COUNTRY_LIST = list(pycountry.countries)
 
 
 def generate_test_data(
