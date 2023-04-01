@@ -1,7 +1,20 @@
 import sqlite3
 import pycountry
+import pydantic
 
 COUNTRY_LIST = list(pycountry.countries)
+
+
+class Commands(pydantic.BaseModel):
+    id: int
+    name: str
+    country: str
+    level: int
+
+
+class Group(pydantic.BaseModel):
+    id: int
+    commands: list[Commands]
 
 
 def generate_test_data(
