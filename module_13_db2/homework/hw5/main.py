@@ -1,3 +1,5 @@
+import enum
+import random
 import sqlite3
 import pycountry
 import pydantic
@@ -5,7 +7,7 @@ import pydantic
 COUNTRY_LIST = list(pycountry.countries)
 
 
-class Commands(pydantic.BaseModel):
+class Command(pydantic.BaseModel):
     id: int
     name: str
     country: str
@@ -14,14 +16,43 @@ class Commands(pydantic.BaseModel):
 
 class Group(pydantic.BaseModel):
     id: int
-    commands: list[Commands]
+    commands: list[Command]
+
+
+class Level(enum.IntEnum):
+    WEAK = 1
+    MEDIUM = 2 | 3
+    STRONG = 4
+
+
+def get_group(group_number: int) -> Group:
+    levels: list[Level] = [Level.WEAK, Level.STRONG, Level.MEDIUM, Level.MEDIUM]
+    return Group(
+        id=group_number,
+        commands=[Command(
+            id=number,
+            name="Command" + str(number),
+            country=random.choice(COUNTRY_LIST).name,
+            level=levels[number - 1]
+        ) for number in range(1, 5)]
+    )
+
+
+def set_groups(number_of_commands: int) -> list[Group]:
+    group_list: list[Group] = []
+    for group_number in range(1, number_of_commands + 1):
+        group_list.append(
+            get_group(group_number)
+        )
+    return group_list
 
 
 def generate_test_data(
         cursor: sqlite3.Cursor,
         number_of_groups: int,
 ) -> None:
-    ...
+    groups = set_groups(number_of_groups)
+    print(groups)
 
 
 if __name__ == '__main__':
