@@ -11,7 +11,7 @@ class Command(pydantic.BaseModel):
     id: int
     name: str
     country: str
-    level: int
+    level: str
 
 
 class Group(pydantic.BaseModel):
@@ -30,10 +30,10 @@ def get_group(group_number: int) -> Group:
     return Group(
         id=group_number,
         commands=[Command(
-            id=number,
+            id=number + (group_number * 4),
             name="Command" + str(number),
             country=random.choice(COUNTRY_LIST).name,
-            level=levels[number - 1]
+            level=levels[number - 1].name
         ) for number in range(1, 5)]
     )
 
@@ -52,7 +52,34 @@ def generate_test_data(
         number_of_groups: int,
 ) -> None:
     groups = set_groups(number_of_groups)
-    print(groups)
+    uefa_commands_parameters: list[dict] = []
+    uefa_draw_parameters: list[dict] = []
+    for group in groups:
+        for command in group.commands:
+            uefa_commands_parameters.append({
+                "command_name": command.name,
+                "command_country": command.country,
+                "command_level": command.level
+            })
+            uefa_draw_parameters.append({
+                "command_number": command.id,
+                "group_number": group.id
+            })
+    commands_query = """
+        INSERT INTO uefa_commands (command_name, command_country, command_level)
+            VALUES (
+                    :command_name, 
+                    :command_country, 
+                    :command_level
+                    ) 
+    """
+    group_query = """
+        INSERT INTO uefa_draw (command_number, group_number)
+            VALUES (:command_number,
+                    :group_number)
+    """
+    cursor.executemany(commands_query, uefa_commands_parameters)
+    cursor.executemany(group_query, uefa_draw_parameters)
 
 
 if __name__ == '__main__':
