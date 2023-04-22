@@ -1,7 +1,8 @@
 from flask import Flask, render_template
 from typing import List
+from flask import request, Response
 
-from models import init_db, get_all_books, DATA
+from models import init_db, get_all_books, DATA, Book, add_book
 
 app: Flask = Flask(__name__)
 
@@ -37,9 +38,18 @@ def all_books() -> str:
     )
 
 
-@app.route('/books/form')
-def get_books_form() -> str:
-    return render_template('add_book.html')
+@app.route('/books/form', methods=['GET', 'POST'])
+def get_books_form() -> str | Response:
+    if request.method == 'GET':
+        return render_template('add_book.html')
+    elif request.method == "POST":
+        book = Book(
+            title=request.form["book_title"],
+            author=request.form["author_name"],
+            id=None
+        )
+        add_book(book)
+        return Response({"msg": "Ok"}, status=200, mimetype='application/json')
 
 
 if __name__ == '__main__':

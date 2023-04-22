@@ -10,8 +10,8 @@ DATA: List[dict] = [
 
 class Book:
 
-    def __init__(self, id: int, title: str, author: str) -> None:
-        self.id: int = id
+    def __init__(self, id: Optional[int], title: str, author: str) -> None:
+        self.id: Optional[int] = id
         self.title: str = title
         self.author: str = author
 
@@ -36,7 +36,7 @@ def init_db(initial_records: List[dict]) -> None:
                 CREATE TABLE `table_books` (
                     id INTEGER PRIMARY KEY AUTOINCREMENT, 
                     title TEXT, 
-                    author TEXT, 
+                    author TEXT
                 )
                 """
             )
@@ -61,3 +61,12 @@ def get_all_books() -> List[Book]:
             """
         )
         return [Book(*row) for row in cursor.fetchall()]
+
+def add_book(book: Book) -> None:
+    with sqlite3.connect('table_books.db') as conn:
+        cursor: sqlite3.Cursor = conn.cursor()
+        query = f"""
+                INSERT INTO table_books (title, author) VALUES 
+                (?, ?)
+                    """
+        cursor.execute(query, (book.title, book.author))
