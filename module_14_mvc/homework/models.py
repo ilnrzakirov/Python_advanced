@@ -10,10 +10,11 @@ DATA: List[dict] = [
 
 class Book:
 
-    def __init__(self, id: Optional[int], title: str, author: str) -> None:
+    def __init__(self, id: Optional[int], title: str, author: str, count: int) -> None:
         self.id: Optional[int] = id
         self.title: str = title
         self.author: str = author
+        self.count: int = count
 
     def __getitem__(self, item: str) -> Any:
         return getattr(self, item)
@@ -36,7 +37,8 @@ def init_db(initial_records: List[dict]) -> None:
                 CREATE TABLE `table_books` (
                     id INTEGER PRIMARY KEY AUTOINCREMENT, 
                     title TEXT, 
-                    author TEXT
+                    author TEXT,
+                    count INTEGER default 0
                 )
                 """
             )
@@ -81,3 +83,38 @@ def get_books(author: str) -> List[Book]:
             """
         )
         return [Book(*row) for row in cursor.fetchall()]
+
+def get_book_by_id(id :int) -> Book:
+    with sqlite3.connect('table_books.db') as conn:
+        cursor: sqlite3.Cursor = conn.cursor()
+        cursor.execute(
+            f"""
+            SELECT * from `table_books` WHERE id = {id}
+            """
+        )
+        return Book(*cursor.fetchone())
+
+
+def update_count_many_books(books: List[Book]) -> None:
+    with sqlite3.connect('table_books.db') as conn:
+        cursor: sqlite3.Cursor = conn.cursor()
+        parameters = []
+        query = """
+            UPDATE table_books SET count= :count
+                WHERE id= :id
+        """
+        for book in books:
+            parameters.append({
+                "id": book.id,
+                "count": book.count + 1
+            })
+        cursor.executemany(query, parameters)
+
+def update_count_book(book: Book) -> None:
+    with sqlite3.connect('table_books.db') as conn:
+        cursor: sqlite3.Cursor = conn.cursor()
+        query = """
+            UPDATE table_books SET count= :count
+                WHERE id= :id
+        """
+        cursor.execute(query, {"id": book.id, "count": book.count})

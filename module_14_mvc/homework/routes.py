@@ -5,7 +5,8 @@ from flask_wtf import FlaskForm
 from wtforms import StringField
 from wtforms.validators import InputRequired
 
-from models import init_db, get_all_books, DATA, Book, add_book, get_books
+from models import init_db, get_all_books, DATA, Book, add_book, get_books, get_book_by_id, update_count_book, \
+    update_count_many_books
 
 app: Flask = Flask(__name__)
 
@@ -35,9 +36,11 @@ def _get_html_table_for_books(books: List[dict]) -> str:
 
 @app.route('/books')
 def all_books() -> str:
+    books = get_all_books()
+    update_count_many_books(books)
     return render_template(
         'index.html',
-        books=get_all_books(),
+        books=books,
     )
 
 
@@ -70,11 +73,23 @@ def get_books_for_author() -> Response:
     elif request.method == "POST":
         if "author" in request.form:
             books = get_books(request.form["author"])
+            update_count_many_books(books)
             return render_template(
                 'index.html',
                 books=books,
             )
+        else:
+            return Response(status=418)
 
+
+@app.route('/books/<id>', methods=['GET'])
+def get_book(id: int) -> str | Response:
+    book = get_book_by_id(id)
+    if book:
+        update_count_book(book)
+        return render_template("details.html", book=book)
+    else:
+        return Response(status=418)
 
 if __name__ == '__main__':
     init_db(DATA)
