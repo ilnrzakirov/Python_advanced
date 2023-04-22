@@ -5,7 +5,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField
 from wtforms.validators import InputRequired
 
-from models import init_db, get_all_books, DATA, Book, add_book
+from models import init_db, get_all_books, DATA, Book, add_book, get_books
 
 app: Flask = Flask(__name__)
 
@@ -62,6 +62,18 @@ def get_books_form() -> str | Response:
             return Response({"msg": "Ok"}, status=200, mimetype='application/json')
         else:
             return Response(status=418)
+
+@app.route('/books/author', methods=['GET', 'POST'])
+def get_books_for_author() -> Response:
+    if request.method == "GET":
+        return render_template("get_author.html")
+    elif request.method == "POST":
+        if "author" in request.form:
+            books = get_books(request.form["author"])
+            return render_template(
+                'index.html',
+                books=books,
+            )
 
 
 if __name__ == '__main__':

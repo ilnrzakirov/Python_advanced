@@ -70,3 +70,14 @@ def add_book(book: Book) -> None:
                 (?, ?)
                     """
         cursor.execute(query, (book.title, book.author))
+
+
+def get_books(author: str) -> List[Book]:
+    with sqlite3.connect('table_books.db') as conn:
+        cursor: sqlite3.Cursor = conn.cursor()
+        cursor.execute(
+            f"""
+            SELECT * from `table_books` WHERE author = '{author}'
+            """
+        )
+        return [Book(*row) for row in cursor.fetchall()]
