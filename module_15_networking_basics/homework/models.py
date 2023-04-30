@@ -3,8 +3,8 @@ from typing import Optional, Any
 
 
 class Room:
-    def __init__(self, floor: int, beds: int, guestNum: int, price: int, pk: Optional[int] = None):
-        self.id: int = pk
+    def __init__(self, id: Optional[int], floor: int, beds: int, guestNum: int, price: int):
+        self.id: int = id
         self.floor: int = floor
         self.beds: int = beds
         self.guestNum: int = guestNum
@@ -39,12 +39,19 @@ def add_room_to_db(room: Room):
         cursor.execute(query, (room.floor, room.beds, room.guestNum, room.price))
 
 
-def get_rooms() -> list[Room]:
+def get_rooms(checkIn: str = None, checkOut: str = None) -> list[Room]:
     with sqlite3.connect('table_room.db') as conn:
         cursor: sqlite3.Cursor = conn.cursor()
-        cursor.execute(
-            """
-            SELECT * from `table_rooms`
-            """
-        )
+        if checkIn and checkOut:
+            cursor.execute(
+                """
+                    SELECT * from `table_rooms`
+                """
+            )
+        else:
+            cursor.execute(
+                """
+                SELECT * from `table_rooms`
+                """
+            )
         return [Room(*row) for row in cursor.fetchall()]
