@@ -1,9 +1,11 @@
+import datetime
 
 from flask import Flask
 from flask import request, Response
 from flask import jsonify
 
-from module_15_networking_basics.homework.models import init_db, Room, add_room_to_db, get_rooms, Order
+from module_15_networking_basics.homework.models import init_db, Room, add_room_to_db, get_rooms, Order, add_order, \
+    get_order
 
 app: Flask = Flask(__name__)
 
@@ -37,7 +39,7 @@ def get_room() -> Response:
             "roomId": room.id,
             "floor": room.floor,
             "beds": room.beds,
-            "questNum": room.guestNum,
+            "guestNum": room.guestNum,
             "price": room.price
         })
     return jsonify(properties)
@@ -47,13 +49,21 @@ def get_room() -> Response:
 def booking():
     if request.method == "POST":
         data = request.get_json()
+        checkIn = datetime.datetime.strptime(str(data["bookingDates"]["checkIn"]), "%Y%m%d")
+        checkOut = datetime.datetime.strptime(str(data["bookingDates"]["checkOut"]), "%Y%m%d")
         order = Order(
-            checkIn=data["bookingDates"]["checkIn"],
-            checkOut=data["bookingDates"]["checkOut"],
+            id=None,
+            checkIn=checkIn,
+            checkOut=checkOut,
             firstName=data["firstName"],
             lastName=data["lastName"],
             roomId=data["roomId"]
         )
+        if get_order(order):
+            return Response(status=409)
+        add_order(order)
+        return Response(status=200)
+    return Response(status=404)
 
 
 if __name__ == '__main__':

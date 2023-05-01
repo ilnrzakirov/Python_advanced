@@ -1,3 +1,4 @@
+import datetime
 import sqlite3
 from typing import Optional, Any
 
@@ -15,9 +16,10 @@ class Room:
 
 class Order:
 
-    def __init__(self, checkIn: str, checkOut: str, firstName: str, lastName: str, roomId: int):
-        self.checkIn = checkIn
-        self.checkOut = checkOut
+    def __init__(self, id: Optional[int], checkIn: datetime, checkOut: datetime, firstName: str, lastName: str, roomId: int):
+        self.id = id
+        self.checkIn: datetime = checkIn
+        self.checkOut: datetime = checkOut
         self.firstname = firstName
         self.lastName = lastName
         self.roomId = roomId
@@ -58,19 +60,36 @@ def add_room_to_db(room: Room):
                   (?, ?, ?, ?)
                       """
         cursor.execute(query, (room.floor, room.beds, room.guestNum, room.price))
+        conn.commit()
+
+
+def add_order(order: Order):
+    with sqlite3.connect('table_room.db') as conn:
+        cursor: sqlite3.Cursor = conn.cursor()
+        query = """
+                  INSERT INTO `table_orders` (checkIn, checkOut, firstName, lastName, roomId) VALUES 
+                  (?, ?, ?, ?, ?)
+                      """
+        cursor.execute(query, (order.checkIn, order.checkOut, order.firstname, order.lastName, order.roomId))
+        conn.commit()
+
+
+def get_order(order: Order):
+    with sqlite3.connect('table_room.db') as conn:
+        cursor: sqlite3.Cursor = conn.cursor()
+        query = f"""
+            SELECT * from `table_orders` WHERE 'checkIn'>='{order.checkIn}' AND 'checkIn'<='{order.checkOut}'
+                    AND 'roomID'={order.roomId};
+        """
+        cursor.execute(query)
+        orders = [Order(*row) for row in cursor.fetchall()]
+        return orders
 
 
 def get_rooms(checkIn: str = None, checkOut: str = None) -> list[Room]:
     with sqlite3.connect('table_room.db') as conn:
         cursor: sqlite3.Cursor = conn.cursor()
-        if checkIn and checkOut:
-            cursor.execute(
-                """
-                    SELECT * from `table_rooms`
-                """
-            )
-        else:
-            cursor.execute(
+        cursor.execute(
                 """
                 SELECT * from `table_rooms`
                 """
