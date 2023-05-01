@@ -40,7 +40,6 @@ def get_room() -> Response:
             "questNum": room.guestNum,
             "price": room.price
         })
-    print(properties)
     return jsonify(properties)
 
 
