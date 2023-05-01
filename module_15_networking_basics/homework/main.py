@@ -3,7 +3,7 @@ from flask import Flask
 from flask import request, Response
 from flask import jsonify
 
-from module_15_networking_basics.homework.models import init_db, Room, add_room_to_db, get_rooms
+from module_15_networking_basics.homework.models import init_db, Room, add_room_to_db, get_rooms, Order
 
 app: Flask = Flask(__name__)
 
@@ -43,11 +43,17 @@ def get_room() -> Response:
     return jsonify(properties)
 
 
-@app.route('/room/<checkIn>/<checkOut>/<int:guestsNum>', methods=['GET'])
-def get_room_for_date(checkIn: str, checkOut: str, guestNum: int):
-    print(checkIn)
-    print(checkOut)
-    print(guestNum)
+@app.route('/booking', methods=['POST'])
+def booking():
+    if request.method == "POST":
+        data = request.get_json()
+        order = Order(
+            checkIn=data["bookingDates"]["checkIn"],
+            checkOut=data["bookingDates"]["checkOut"],
+            firstName=data["firstName"],
+            lastName=data["lastName"],
+            roomId=data["roomId"]
+        )
 
 
 if __name__ == '__main__':

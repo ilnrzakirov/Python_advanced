@@ -13,6 +13,15 @@ class Room:
     def __getitem__(self, item: str) -> Any:
         return getattr(self, item)
 
+class Order:
+
+    def __init__(self, checkIn: str, checkOut: str, firstName: str, lastName: str, roomId: int):
+        self.checkIn = checkIn
+        self.checkOut = checkOut
+        self.firstname = firstName
+        self.lastName = lastName
+        self.roomId = roomId
+
 def init_db() -> None:
     with sqlite3.connect('table_room.db') as conn:
         cursor: sqlite3.Cursor = conn.cursor()
@@ -25,6 +34,18 @@ def init_db() -> None:
                     guestNum INTEGER,
                     price INTEGER
                 );
+            """
+        )
+        cursor.execute(
+            """
+                CREATE TABLE IF NOT EXISTS `table_orders` (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    checkIn DATETIME,
+                    checkOut DATETIME,
+                    firstName VARCHAR(255),
+                    lastName VARCHAR(255),
+                    roomId INTEGER,
+                    FOREIGN KEY (roomId) REFERENCES table_rooms(id))
             """
         )
 
