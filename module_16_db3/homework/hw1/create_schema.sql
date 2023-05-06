@@ -25,3 +25,34 @@ CREATE TABLE IF NOT EXISTS 'director' (
 INSERT INTO 'director' (dir_first_name, dir_last_name) VALUES
         ("Иван", "Козлов"), ("Павел", "Сидров");
 
+
+CREATE TABLE IF NOT EXISTS "movie_cast" (
+  act_id INTEGER REFERENCES actors(act_id),
+  mov_id INTEGER REFERENCES movie(mov_id),
+  role VARCHAR(50) NOT NULL
+);
+
+
+INSERT INTO movie_cast (act_id, mov_id, role) VALUES
+(1, 1, "Role1"), (2, 2, "Role2");
+
+
+CREATE TABLE IF NOT EXISTS 'oscar_awarded' (
+    award_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    mov_id INTEGER REFERENCES movie(mov_id)
+);
+
+
+INSERT INTO oscar_awarded (mov_id) VALUES
+(1), (2);
+
+
+CREATE TABLE IF NOT EXISTS 'movie_direction' (
+    dir_id INTEGER REFERENCES director(dir_id),
+    mov_id INTEGER REFERENCES movie(mov_id)
+);
+
+
+INSERT INTO  movie_direction (dir_id, mov_id) VALUES
+    (1, 1), (2, 2);
+
