@@ -21,6 +21,15 @@ class Book:
     def __getitem__(self, item: str) -> Union[int, str]:
         return getattr(self, item)
 
+@dataclass
+class Author:
+    first_name: str
+    last_name: str
+    middle_name: Optional[str] = None
+    id: Optional[int] = None
+
+
+
 
 def init_db(initial_records: List[Dict]) -> None:
     with sqlite3.connect(DATABASE_NAME) as conn:
