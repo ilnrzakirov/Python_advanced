@@ -26,7 +26,7 @@ class Author:
 @dataclass
 class Book:
     title: str
-    author: Author
+    author: Optional[Union[int, Author]]
     id: Optional[int] = None
 
     def __getitem__(self, item: str) -> Union[int, str]:
