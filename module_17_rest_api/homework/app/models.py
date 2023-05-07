@@ -48,6 +48,16 @@ def init_db(initial_records: List[Dict]) -> None:
         if not exists:
             cursor.executescript(
                 f"""
+                    CREATE TABLE IF NOT EXISTS '{AUTHOR_TABLE}' (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                        first_name VARCHAR(50) NOT NULL,
+                        last_name VARCHAR(50) NOT NULL,
+                        middle_name VARCHAR(50)
+                        );
+                """
+            )
+            cursor.executescript(
+                f"""
                 CREATE TABLE `{BOOKS_TABLE_NAME}`(
                     id INTEGER PRIMARY KEY AUTOINCREMENT, 
                     title TEXT,
@@ -55,25 +65,23 @@ def init_db(initial_records: List[Dict]) -> None:
                 );
                 """
             )
-            cursor.executescript(
+            cursor.execute(
                 f"""
-                    CREATE TABLE IF NOT EXISTS '{AUTHOR_TABLE}' (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT, 
-                        first_name VARCHAR(50) NOT NULL,
-                        last_name VARCHAR(50) NOT NULL,
-                        middle_name VARCHAR(50),
-                        );
+                    INSERT INTO '{AUTHOR_TABLE}' 
+                        (first_name, last_name, middle_name) VALUES 
+                        ("Swaroop", "C", "H"), 
+                        ("Herman", "Melville", NULL),
+                        ("Leo", "Tolstoy", NULL)
                 """
             )
-
             cursor.executemany(
                 f"""
                 INSERT INTO `{BOOKS_TABLE_NAME}`
                 (title, author) VALUES (?, ?)
                 """,
                 [
-                    (item['title'], item['author'])
-                    for item in initial_records
+                    (item['title'], num)
+                    for num, item in enumerate(initial_records)
                 ]
             )
 
