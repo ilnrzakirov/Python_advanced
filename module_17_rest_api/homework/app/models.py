@@ -10,22 +10,23 @@ DATA = [
 
 DATABASE_NAME = 'table_books.db'
 BOOKS_TABLE_NAME = 'books'
-
-
-@dataclass
-class Book:
-    title: str
-    author: str
-    id: Optional[int] = None
-
-    def __getitem__(self, item: str) -> Union[int, str]:
-        return getattr(self, item)
+AUTHOR_TABLE = 'authors'
 
 @dataclass
 class Author:
     first_name: str
     last_name: str
     middle_name: Optional[str] = None
+    id: Optional[int] = None
+
+    def __getitem__(self, item: str) -> Union[int, str]:
+        return getattr(self, item)
+
+
+@dataclass
+class Book:
+    title: str
+    author: Author
     id: Optional[int] = None
 
     def __getitem__(self, item: str) -> Union[int, str]:
@@ -50,10 +51,21 @@ def init_db(initial_records: List[Dict]) -> None:
                 CREATE TABLE `{BOOKS_TABLE_NAME}`(
                     id INTEGER PRIMARY KEY AUTOINCREMENT, 
                     title TEXT,
-                    author TEXT
+                    author INTEGER REFERENCES '{AUTHOR_TABLE}'(id)
                 );
                 """
             )
+            cursor.executescript(
+                f"""
+                    CREATE TABLE IF NOT EXISTS '{AUTHOR_TABLE}' (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                        first_name VARCHAR(50) NOT NULL,
+                        last_name VARCHAR(50) NOT NULL,
+                        middle_name VARCHAR(50),
+                        );
+                """
+            )
+
             cursor.executemany(
                 f"""
                 INSERT INTO `{BOOKS_TABLE_NAME}`
