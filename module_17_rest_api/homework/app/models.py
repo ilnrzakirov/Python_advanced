@@ -61,7 +61,7 @@ def init_db(initial_records: List[Dict]) -> None:
                 CREATE TABLE `{BOOKS_TABLE_NAME}`(
                     id INTEGER PRIMARY KEY AUTOINCREMENT, 
                     title TEXT,
-                    author INTEGER REFERENCES '{AUTHOR_TABLE}'(id)
+                    author INTEGER REFERENCES '{AUTHOR_TABLE}'(id) ON DELETE CASCADE 
                 );
                 """
             )
