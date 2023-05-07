@@ -28,6 +28,9 @@ class Author:
     middle_name: Optional[str] = None
     id: Optional[int] = None
 
+    def __getitem__(self, item: str) -> Union[int, str]:
+        return getattr(self, item)
+
 
 
 
