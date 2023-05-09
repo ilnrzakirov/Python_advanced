@@ -176,3 +176,4 @@ def update_book(book: Book) -> Optional[Book]:
                     WHERE id = {book.id}
             """
         )
+    return book
