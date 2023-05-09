@@ -165,3 +165,14 @@ def get_book_by_title(book_title: str) -> Optional[Book]:
         book = cursor.fetchone()
         if book:
             return _get_book_obj_from_row(book)
+
+
+def update_book(book: Book) -> Optional[Book]:
+    with sqlite3.connect(DATABASE_NAME) as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            f"""
+                UPDATE {BOOKS_TABLE_NAME} SET (title = {book.title}, author = {book.author})
+                    WHERE id = {book.id}
+            """
+        )
