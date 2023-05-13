@@ -6,9 +6,10 @@ from models import (
     DATA,
     get_all_books,
     init_db,
-    add_book, update_book, update_book_by_id, get_book_by_id, delete_book_by_id,
+    add_book, update_book, update_book_by_id, get_book_by_id, delete_book_by_id, add_author, get_author_by_id,
+    get_books_by_author,
 )
-from schemas import BookSchema
+from schemas import BookSchema, AuthorSchema
 
 app = Flask(__name__)
 api = Api(app)
@@ -53,13 +54,34 @@ class BookRout(Resource):
         return {'msg': "ok"}, 200
 
 
-class AuthorList(Resource):
-    def get(self):
-        pass
+class AuthorResource(Resource):
+    def post(self):
+        data = request.json
+        schema = AuthorSchema()
+        try:
+            author = schema.load(data)
+            add_author(author)
+            return schema.dump(author), 200
+        except ValidationError as exc:
+            return exc.messages, 400
+
+class AuthorByID(Resource):
+    def get(self, id: int):
+        author = get_author_by_id(id)
+        if author:
+            books = get_books_by_author(author.id)
+            schema = BookSchema()
+            return schema.dump(books, many=True), 200
+        else:
+            return {"msg": "error"}, 404
 
 
 api.add_resource(BookList, '/api/books')
 api.add_resource(BookRout, '/api/book/<int:id>')
+api.add_resource(AuthorResource, "/api/authors")
+api.add_resource(AuthorByID, '/api/authors/<int:id>')
+
+
 
 if __name__ == '__main__':
     init_db(initial_records=DATA)

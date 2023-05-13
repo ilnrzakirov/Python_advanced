@@ -154,14 +154,6 @@ def update_book_by_id(book: Book) -> None:
         )
         conn.commit()
 
-def delete_book_by_id(id: int) -> None:
-    with sqlite3.connect(DATABASE_NAME) as conn:
-        cursor = conn.cursor()
-        cursor.execute(f"""
-            DELETE FROM {BOOKS_TABLE_NAME} WHERE id = ?
-        """,
-                       (id, )
-        )
 
 def delete_book_by_id(book_id: int) -> None:
     with sqlite3.connect(DATABASE_NAME) as conn:
@@ -201,3 +193,29 @@ def get_author_by_id(id: int) -> Optional[Author]:
         author = cursor.fetchone()
         if author:
             return _get_author_object(author)
+
+
+def add_author(author: Author) -> Author:
+    with sqlite3.connect(DATABASE_NAME) as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            f"""
+            INSERT INTO `authors` 
+            (first_name, last_name, middle_name) VALUES (?, ?, ?)
+            """,
+            (author.first_name, author.last_name, author.middle_name)
+        )
+        author.id = cursor.lastrowid
+        return author
+
+def get_books_by_author(author_id: int) -> list[Book]:
+    with sqlite3.connect(DATABASE_NAME) as conn:
+        cursor = conn.cursor()
+        cursor.execute(f"""
+            SELECT * FROM `{BOOKS_TABLE_NAME}` WHERE author = ?
+        """, (author_id, ))
+        books = cursor.fetchall()
+        books_list: list[Book] = []
+        for book in books:
+            books_list.append(_get_book_obj_from_row(book))
+        return books_list
