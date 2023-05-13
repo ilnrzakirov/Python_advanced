@@ -7,7 +7,7 @@ from models import (
     get_all_books,
     init_db,
     add_book, update_book, update_book_by_id, get_book_by_id, delete_book_by_id, add_author, get_author_by_id,
-    get_books_by_author,
+    get_books_by_author, delete_author_by_id,
 )
 from schemas import BookSchema, AuthorSchema
 
@@ -74,6 +74,10 @@ class AuthorByID(Resource):
             return schema.dump(books, many=True), 200
         else:
             return {"msg": "error"}, 404
+
+    def delete(self, id: int):
+        delete_author_by_id(id)
+        return {"msg": "ok"}, 200
 
 
 api.add_resource(BookList, '/api/books')

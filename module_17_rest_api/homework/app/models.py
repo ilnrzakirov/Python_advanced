@@ -219,3 +219,13 @@ def get_books_by_author(author_id: int) -> list[Book]:
         for book in books:
             books_list.append(_get_book_obj_from_row(book))
         return books_list
+
+
+def delete_author_by_id(id: int) -> None:
+    with sqlite3.connect(DATABASE_NAME) as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            f"""
+                DELETE FROM authors WHERE id = ?
+            """, (id, )
+        )
