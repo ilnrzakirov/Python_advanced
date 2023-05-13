@@ -111,6 +111,18 @@ def add_book(book: Book) -> Book:
         book.id = cursor.lastrowid
         return book
 
+def update_book(book: Book) -> Book:
+    with sqlite3.connect(DATABASE_NAME) as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            f"""
+                UPDATE `{BOOKS_TABLE_NAME}`
+                    SET (title = '{book.title}', author = {book.author})
+                    WHERE id = {book.id};
+            """
+        )
+        return book
+
 
 def get_book_by_id(book_id: int) -> Optional[Book]:
     with sqlite3.connect(DATABASE_NAME) as conn:
@@ -139,6 +151,14 @@ def update_book_by_id(book: Book) -> None:
         )
         conn.commit()
 
+def delete_book_by_id(id: int) -> None:
+    with sqlite3.connect(DATABASE_NAME) as conn:
+        cursor = conn.cursor()
+        cursor.execute(f"""
+            DELETE FROM {BOOKS_TABLE_NAME} WHERE id = ?
+        """,
+                       (id, )
+        )
 
 def delete_book_by_id(book_id: int) -> None:
     with sqlite3.connect(DATABASE_NAME) as conn:
@@ -166,14 +186,3 @@ def get_book_by_title(book_title: str) -> Optional[Book]:
         if book:
             return _get_book_obj_from_row(book)
 
-
-def update_book(book: Book) -> Optional[Book]:
-    with sqlite3.connect(DATABASE_NAME) as conn:
-        cursor = conn.cursor()
-        cursor.execute(
-            f"""
-                UPDATE {BOOKS_TABLE_NAME} SET (title = {book.title}, author = {book.author})
-                    WHERE id = {book.id}
-            """
-        )
-    return book

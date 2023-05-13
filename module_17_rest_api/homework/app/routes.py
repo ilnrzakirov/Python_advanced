@@ -6,7 +6,7 @@ from models import (
     DATA,
     get_all_books,
     init_db,
-    add_book,
+    add_book, update_book, update_book_by_id, get_book_by_id, delete_book_by_id,
 )
 from schemas import BookSchema
 
@@ -31,7 +31,35 @@ class BookList(Resource):
         return schema.dump(book), 201
 
 
+class BookRout(Resource):
+    def put(self, id: int):
+        data = request.json
+        schema = BookSchema()
+        try:
+            book = schema.load(data)
+            book.id = id
+            update_book_by_id(book)
+            return schema.dump(book), 200
+        except ValidationError as e:
+            return e.messages, 400
+
+    def get(self, id: int):
+        schema = BookSchema()
+        book = get_book_by_id(id)
+        return schema.dump(book), 200
+
+    def delete(self, id: int):
+        delete_book_by_id(id)
+        return {'msg': "ok"}, 200
+
+
+class AuthorList(Resource):
+    def get(self):
+        pass
+
+
 api.add_resource(BookList, '/api/books')
+api.add_resource(BookRout, '/api/book/<int:id>')
 
 if __name__ == '__main__':
     init_db(initial_records=DATA)
