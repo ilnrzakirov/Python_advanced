@@ -33,8 +33,6 @@ class Book:
         return getattr(self, item)
 
 
-
-
 def init_db(initial_records: List[Dict]) -> None:
     with sqlite3.connect(DATABASE_NAME) as conn:
         cursor = conn.cursor()
