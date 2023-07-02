@@ -30,10 +30,42 @@ spec = APISpec(
 
 class BookList(Resource):
     def get(self) -> tuple[list[dict], int]:
+        """
+        ---
+        tags:
+          - books
+        responses:
+          200:
+            description: books list
+            schema:
+              type: array
+              items:
+                $ref: '#/definitions/Book'
+
+        """
         schema = BookSchema()
         return schema.dump(get_all_books(), many=True), 200
 
     def post(self) -> tuple[dict, int]:
+        """
+        ---
+        tags:
+          - books
+        parameters:
+          - in: body
+            name: new book
+            schema:
+              $ref: '#/definitions/Book'
+        responses:
+          201:
+            descriptions: New book created
+            schema:
+              $ref: '#/definitions/Book'
+          400:
+            descriptions: Validation error
+            schema:
+              $ref: '#/definitions/Book'
+        """
         data = request.json
         schema = BookSchema()
         try:
@@ -103,7 +135,7 @@ template = spec.to_flasgger(
     definitions=[BookSchema],
 )
 
-swagegr = Swagger(app, template=template)
+swagger = Swagger(app, template=template)
 
 if __name__ == '__main__':
     init_db(initial_records=DATA)
