@@ -1,6 +1,9 @@
+from apispec.ext.marshmallow import MarshmallowPlugin
 from flask import Flask, request
 from flask_restful import Api, Resource
 from marshmallow import ValidationError
+from flasgger import APISpec, Swagger
+from apispec_webframeworks.flask import FlaskPlugin
 
 from models import (
     DATA,
@@ -13,6 +16,16 @@ from schemas import BookSchema, AuthorSchema
 
 app = Flask(__name__)
 api = Api(app)
+
+spec = APISpec(
+    title="Boocklist",
+    version="1.0.0",
+    openapi_version="2.0",
+    plugins=[
+        FlaskPlugin(),
+        MarshmallowPlugin(),
+    ]
+)
 
 
 class BookList(Resource):
@@ -85,7 +98,12 @@ api.add_resource(BookRout, '/api/book/<int:id>')
 api.add_resource(AuthorResource, "/api/authors")
 api.add_resource(AuthorByID, '/api/authors/<int:id>')
 
+template = spec.to_flasgger(
+    app,
+    definitions=[BookSchema],
+)
 
+swagegr = Swagger(app, template=template)
 
 if __name__ == '__main__':
     init_db(initial_records=DATA)
